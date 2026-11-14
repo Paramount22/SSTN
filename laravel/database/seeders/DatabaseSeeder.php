@@ -14,18 +14,26 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      *
-     * Creates the local development admin account. Change the password
-     * before the first deployment; it is for local use only.
+     * Creates the single administrator account (local development password –
+     * change it before the first deployment) and the current site content.
      */
     public function run(): void
     {
-        User::query()->firstOrCreate(
+        User::query()->updateOrCreate(
             ['email' => 'admin@sstn.test'],
             [
                 'name' => 'Admin SSTN',
                 'password' => Hash::make('Sstn-dev-2026!'),
                 'email_verified_at' => now(),
+                'is_admin' => true,
             ],
         );
+
+        $this->call([
+            TextBlockSeeder::class,
+            MembershipFeeSeeder::class,
+            LinkSeeder::class,
+            EventSeeder::class,
+        ]);
     }
 }
