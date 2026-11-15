@@ -4,6 +4,7 @@
     $nav = [
         ['route' => 'admin.dashboard', 'match' => 'admin.dashboard', 'icon' => 'home', 'label' => 'Prehľad'],
         ['route' => 'admin.events.index', 'match' => 'admin.events.*', 'icon' => 'calendar', 'label' => 'Podujatia', 'badge' => \App\Models\Event::upcoming()->count() ?: null],
+        ['route' => 'admin.articles.index', 'match' => 'admin.articles.*', 'icon' => 'photo', 'label' => 'Články'],
         ['route' => 'admin.text-blocks.index', 'match' => 'admin.text-blocks.*', 'icon' => 'document', 'label' => 'Texty stránky'],
         ['route' => 'admin.membership-fees.index', 'match' => 'admin.membership-fees.*', 'icon' => 'users', 'label' => 'Členské príspevky'],
         ['route' => 'admin.links.index', 'match' => 'admin.links.*', 'icon' => 'link', 'label' => 'Odkazy a partneri'],

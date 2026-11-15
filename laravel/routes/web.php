@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventAttachmentController;
 use App\Http\Controllers\Admin\EventController;
@@ -34,6 +35,8 @@ Route::prefix('admin')
         Route::post('events/{event}/attachments', [EventAttachmentController::class, 'store'])->name('events.attachments.store');
         Route::patch('attachments/{attachment}', [EventAttachmentController::class, 'update'])->name('attachments.update');
         Route::delete('attachments/{attachment}', [EventAttachmentController::class, 'destroy'])->name('attachments.destroy');
+
+        Route::resource('articles', ArticleController::class)->except('show');
 
         Route::resource('text-blocks', TextBlockController::class)->only(['index', 'edit', 'update'])->parameters(['text-blocks' => 'textBlock']);
         Route::resource('membership-fees', MembershipFeeController::class)->except('show')->parameters(['membership-fees' => 'membershipFee']);
