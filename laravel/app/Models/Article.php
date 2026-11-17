@@ -6,8 +6,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Encoders\JpegEncoder;
+use Intervention\Image\Encoders\PngEncoder;
+use Intervention\Image\Encoders\WebpEncoder;
+use Intervention\Image\Exceptions\MissingDependencyException;
+use Intervention\Image\Laravel\Facades\Image;
 
 class Article extends Model
 {
@@ -16,6 +22,11 @@ class Article extends Model
     public const IMAGE_TYPES = ['jpg', 'jpeg', 'png', 'webp'];
 
     public const IMAGE_MAX_KB = 10 * 1024;
+
+    /** Longest side of a stored photo, in pixels. */
+    public const IMAGE_MAX_SIDE = 1600;
+
+    public const IMAGE_QUALITY = 82;
 
     protected $fillable = [
         'title', 'slug', 'published_on', 'body',
@@ -61,7 +72,8 @@ class Article extends Model
 
     /**
      * Store the photo under clanky/{year}/ on the public disk (served at
-     * /storage/clanky/{year}/…) and replace any previous photo.
+     * /storage/clanky/{year}/…), scaled down to IMAGE_MAX_SIDE, and replace
+     * any previous photo.
      */
     public function attachImage(UploadedFile $file): void
     {
@@ -76,12 +88,25 @@ class Article extends Model
             $name = "{$base}-{$i}.{$ext}";
         }
 
-        // getimagesize() is part of PHP core – works without the GD extension.
-        [$width, $height] = @getimagesize($file->getRealPath()) ?: [null, null];
-
         $this->deleteImageFile();
+
+        try {
+            $image = Image::decodePath($file->getRealPath())->scaleDown(self::IMAGE_MAX_SIDE, self::IMAGE_MAX_SIDE);
+            $disk->put("{$dir}/{$name}", (string) $image->encode(match ($ext) {
+                'png' => new PngEncoder,
+                'webp' => new WebpEncoder(quality: self::IMAGE_QUALITY),
+                default => new JpegEncoder(quality: self::IMAGE_QUALITY, progressive: true),
+            }));
+            [$width, $height] = [$image->width(), $image->height()];
+        } catch (MissingDependencyException $e) {
+            // No GD/Imagick on this server: keep the original file as uploaded.
+            Log::warning('Photo stored without resizing: '.$e->getMessage());
+            $disk->putFileAs($dir, $file, $name);
+            [$width, $height] = @getimagesize($file->getRealPath()) ?: [null, null];
+        }
+
         $this->forceFill([
-            'image_path' => $disk->putFileAs($dir, $file, $name),
+            'image_path' => "{$dir}/{$name}",
             'image_width' => $width,
             'image_height' => $height,
         ])->save();

@@ -56,7 +56,7 @@
 
         <input id="image" name="image" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" @change="pick"
                class="mt-3 block w-full text-sm text-slate-600 file:mr-3 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-sstn-blue hover:file:bg-blue-100">
-        <p class="mt-1 text-xs text-slate-500">JPG, PNG alebo WebP, najviac 10 MB. Najlepšie na šírku.</p>
+        <p class="mt-1 text-xs text-slate-500">JPG, PNG alebo WebP, najviac 10 MB. Najlepšie na šírku – fotografia sa automaticky zmenší na {{ \App\Models\Article::IMAGE_MAX_SIDE }} px.</p>
         <x-input-error :messages="$errors->get('image')" class="mt-1" />
 
         @if ($article->image_path)

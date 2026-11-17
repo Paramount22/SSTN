@@ -23,3 +23,5 @@ php artisan serve
 Seeder vytvorí lokálny administrátorský účet `admin@sstn.test` (heslo je v `database/seeders/DatabaseSeeder.php`) a naplní obsah z pôvodného webu (podujatia 2025–2026 s PDF, texty, členské príspevky, odkazy).
 
 Administrácia beží na `/admin` (prihlásenie na `/login`). Verejná registrácia je vypnutá; prístup má len používateľ s `is_admin = 1`. Súbory k podujatiam sa ukladajú do `storage/app/public/akcie/<rok>/` a sú dostupné na `/storage/akcie/<rok>/…` – rovnaké adresy ako na starom webe (`php artisan storage:link`).
+
+Fotografie k článkom (`storage/app/public/clanky/<rok>/`) sa pri nahraní zmenšia na max. 1600 px cez balík `intervention/image-laravel`. Server potrebuje rozšírenie PHP **GD** (alebo Imagick – `IMAGE_DRIVER` v `.env`). Bez neho sa fotografia uloží v pôvodnej veľkosti a do logu sa zapíše varovanie.

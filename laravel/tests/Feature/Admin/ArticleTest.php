@@ -5,10 +5,17 @@ use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-/** A real 3×2 PNG, so the test needs no GD extension. */
+/** A 3×2 PNG – drawn with GD when available, otherwise a pre-built one. */
 function fakePhoto(string $name = 'foto.png'): UploadedFile
 {
-    $png = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAIAAAASFvFNAAAAEklEQVR4nGP4z8DAwMDAwMAAAAm+Af/vBIb3AAAAAElFTkSuQmCC');
+    if (extension_loaded('gd')) {
+        $canvas = imagecreatetruecolor(3, 2);
+        ob_start();
+        imagepng($canvas);
+        $png = ob_get_clean();
+    } else {
+        $png = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAIAAAASFvFNAAAAEklEQVR4nGP4z8DAwMDAwMAAAAm+Af/vBIb3AAAAAElFTkSuQmCC');
+    }
 
     return UploadedFile::fake()->createWithContent($name, $png);
 }
@@ -96,3 +103,24 @@ test('articles index and forms render', function () {
 test('non-admins cannot manage articles', function () {
     $this->actingAs(User::factory()->create())->get(route('admin.articles.index'))->assertForbidden();
 });
+
+test('large photos are scaled down to the maximum side', function () {
+    $canvas = imagecreatetruecolor(3200, 2000);
+    imagefill($canvas, 0, 0, imagecolorallocate($canvas, 0, 128, 208));
+    ob_start();
+    imagejpeg($canvas, null, 90);
+    $jpeg = ob_get_clean();
+
+    $this->actingAs($this->admin)->post(route('admin.articles.store'), [
+        'title' => 'Veľká fotka', 'published_on' => '2026-11-16',
+        'image' => UploadedFile::fake()->createWithContent('velka.jpeg', $jpeg),
+    ])->assertSessionHasNoErrors();
+
+    $article = Article::first();
+    expect($article->image_path)->toBe('clanky/2026/velka_fotka.jpg')
+        ->and($article->image_width)->toBe(1600)
+        ->and($article->image_height)->toBe(1000);
+
+    [$w, $h] = getimagesize(Storage::disk('public')->path($article->image_path));
+    expect([$w, $h])->toBe([1600, 1000]);
+})->skip(! extension_loaded('gd'), 'GD extension required');
