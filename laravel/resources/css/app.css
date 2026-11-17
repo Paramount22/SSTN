@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+[x-cloak] { display: none !important; }
+
+/* Admin dark mode: the .dark class sits on <html>, so dark: variants can't style <html> itself. */
+html.dark {
+    @apply bg-slate-950;
+    color-scheme: dark;
+}
+
+/* Admin dark mode: form fields from @tailwindcss/forms default to white. */
+@layer base {
+    .dark input:not([type='checkbox']):not([type='radio']):not([type='file']),
+    .dark select,
+    .dark textarea {
+        @apply border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500;
+    }
+}

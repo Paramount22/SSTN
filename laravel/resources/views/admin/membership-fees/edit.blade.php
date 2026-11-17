@@ -2,10 +2,10 @@
     <x-slot:subtitle>Úprava druhu členstva</x-slot:subtitle>
     <form method="post" action="{{ route('admin.membership-fees.update', $fee) }}" class="max-w-2xl space-y-4">
         @csrf @method('put')
-        <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">@include('admin.membership-fees._form')</section>
+        <section class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm">@include('admin.membership-fees._form')</section>
         <div class="flex items-center gap-3">
-            <button type="submit" class="rounded-full bg-sstn-navy px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#003a80]">Uložiť</button>
-            <a href="{{ route('admin.membership-fees.index') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">Zrušiť</a>
+            <button type="submit" class="rounded-full bg-sstn-navy dark:bg-sstn-blue px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#003a80] dark:hover:bg-[#0069ad]">Uložiť</button>
+            <a href="{{ route('admin.membership-fees.index') }}" class="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">Zrušiť</a>
         </div>
     </form>
 </x-admin.layout>

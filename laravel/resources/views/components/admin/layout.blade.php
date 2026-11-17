@@ -17,23 +17,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title }} · SSTN admin</title>
+    <script>
+        // Theme before first paint: saved choice, otherwise the system setting.
+        try {
+            const theme = localStorage.getItem('sstn-admin-theme');
+            if (theme === 'dark' || (! theme && matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            }
+        } catch (e) {}
+    </script>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="h-full font-sans text-slate-700 antialiased" x-data="{ sidebar: false }">
+<body class="h-full font-sans text-slate-700 dark:text-slate-200 antialiased" x-data="{ sidebar: false }">
 <div class="flex min-h-full">
 
     {{-- Sidebar --}}
-    <div x-show="sidebar" x-transition.opacity class="fixed inset-0 z-30 bg-slate-900/40 lg:hidden" @click="sidebar = false" x-cloak></div>
-    <aside class="fixed inset-y-0 left-0 z-40 flex w-64 -translate-x-full flex-col border-r border-slate-200 bg-white transition-transform lg:static lg:translate-x-0"
+    <div x-show="sidebar" x-transition.opacity class="fixed inset-0 z-30 bg-slate-900/40 dark:bg-black/60 lg:hidden" @click="sidebar = false" x-cloak></div>
+    <aside class="fixed inset-y-0 left-0 z-40 flex w-64 -translate-x-full flex-col border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 transition-transform lg:static lg:translate-x-0"
            :class="sidebar && 'translate-x-0'">
-        <div class="flex h-16 items-center gap-3 border-b border-slate-200 px-5">
+        <div class="flex h-16 items-center gap-3 border-b border-slate-200 dark:border-slate-800 px-5">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3">
-                <img src="{{ asset('images/sstn-logo-mark.webp') }}" alt="SSTN" class="h-8 w-auto">
-                <span class="text-sm font-semibold tracking-wide text-sstn-navy">Administrácia</span>
+                <img src="{{ asset('images/sstn-logo-mark.webp') }}" alt="SSTN" class="h-8 w-auto dark:rounded-md dark:bg-white dark:px-1.5 dark:py-1">
+                <span class="text-sm font-semibold tracking-wide text-sstn-navy dark:text-sky-300">Administrácia</span>
             </a>
-            <button class="ml-auto rounded-md p-1.5 text-slate-500 hover:bg-slate-100 lg:hidden" @click="sidebar = false" aria-label="Zavrieť menu">
+            <button class="ml-auto rounded-md p-1.5 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 lg:hidden" @click="sidebar = false" aria-label="Zavrieť menu">
                 <x-admin.icon name="x" class="h-5 w-5" />
             </button>
         </div>
@@ -43,21 +52,21 @@
                 @php $active = request()->routeIs($item['match']); @endphp
                 <a href="{{ route($item['route']) }}"
                    class="group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition
-                          {{ $active ? 'bg-blue-50 text-sstn-navy' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                          {{ $active ? 'bg-blue-50 dark:bg-sky-500/10 text-sstn-navy dark:text-sky-300' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white' }}">
                     @if ($active)
                         <span class="absolute inset-y-2 -left-3 w-1 rounded-r bg-sstn-blue"></span>
                     @endif
-                    <x-admin.icon :name="$item['icon']" class="h-5 w-5 {{ $active ? 'text-sstn-blue' : 'text-slate-400 group-hover:text-slate-600' }}" />
+                    <x-admin.icon :name="$item['icon']" class="h-5 w-5 {{ $active ? 'text-sstn-blue dark:text-sky-400' : 'text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300' }}" />
                     <span>{{ $item['label'] }}</span>
                     @if (!empty($item['badge']))
-                        <span class="ml-auto rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700">{{ $item['badge'] }}</span>
+                        <span class="ml-auto rounded-full bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 text-xs font-semibold text-emerald-700 dark:text-emerald-300">{{ $item['badge'] }}</span>
                     @endif
                 </a>
             @endforeach
         </nav>
 
-        <div class="border-t border-slate-200 p-4">
-            <a href="{{ route('home') }}" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm text-slate-500 hover:text-sstn-blue">
+        <div class="border-t border-slate-200 dark:border-slate-800 p-4">
+            <a href="{{ route('home') }}" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 hover:text-sstn-blue dark:hover:text-sky-400">
                 <x-admin.icon name="external" class="h-4 w-4" /> Zobraziť web
             </a>
         </div>
@@ -65,35 +74,44 @@
 
     {{-- Main --}}
     <div class="flex min-w-0 flex-1 flex-col">
-        <header class="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-slate-200 bg-white/90 px-4 backdrop-blur sm:px-6 lg:px-8">
-            <button class="rounded-md p-2 text-slate-500 hover:bg-slate-100 lg:hidden" @click="sidebar = true" aria-label="Otvoriť menu">
+        <header class="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 px-4 backdrop-blur sm:px-6 lg:px-8">
+            <button class="rounded-md p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 lg:hidden" @click="sidebar = true" aria-label="Otvoriť menu">
                 <x-admin.icon name="menu" class="h-5 w-5" />
             </button>
 
             <form action="{{ route('admin.events.index') }}" method="get" class="hidden max-w-sm flex-1 sm:block">
                 <label class="relative block">
                     <span class="sr-only">Hľadať podujatie</span>
-                    <x-admin.icon name="search" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                    <x-admin.icon name="search" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
                     <input type="search" name="q" value="{{ request()->routeIs('admin.events.index') ? request('q') : '' }}" placeholder="Hľadať podujatie…"
-                           class="w-full rounded-full border-slate-200 bg-slate-50 py-2 pl-9 pr-4 text-sm focus:border-sstn-blue focus:ring-sstn-blue">
+                           class="w-full rounded-full border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 py-2 pl-9 pr-4 text-sm focus:border-sstn-blue focus:ring-sstn-blue">
                 </label>
             </form>
 
             <div class="ml-auto flex items-center gap-2">
+                <button type="button"
+                        x-data="{ dark: document.documentElement.classList.contains('dark') }"
+                        @click="dark = ! dark; document.documentElement.classList.toggle('dark', dark); try { localStorage.setItem('sstn-admin-theme', dark ? 'dark' : 'light') } catch (e) {}"
+                        :aria-label="dark ? 'Prepnúť na svetlý režim' : 'Prepnúť na tmavý režim'"
+                        :title="dark ? 'Svetlý režim' : 'Tmavý režim'"
+                        class="rounded-full p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white">
+                    <x-admin.icon name="moon" class="h-5 w-5" x-show="! dark" />
+                    <x-admin.icon name="sun" class="h-5 w-5" x-show="dark" x-cloak />
+                </button>
                 <div class="relative" x-data="{ open: false }" @keydown.escape.window="open = false">
-                    <button @click="open = !open" class="flex items-center gap-3 rounded-full py-1 pl-1 pr-3 hover:bg-slate-100">
-                        <span class="grid h-9 w-9 place-items-center rounded-full bg-sstn-navy text-sm font-semibold text-white">
+                    <button @click="open = !open" class="flex items-center gap-3 rounded-full py-1 pl-1 pr-3 hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <span class="grid h-9 w-9 place-items-center rounded-full bg-sstn-navy dark:bg-sstn-blue text-sm font-semibold text-white">
                             {{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}
                         </span>
-                        <span class="hidden text-sm font-medium text-slate-700 sm:block">{{ auth()->user()->name }}</span>
-                        <x-admin.icon name="chevron-down" class="h-4 w-4 text-slate-400" />
+                        <span class="hidden text-sm font-medium text-slate-700 dark:text-slate-200 sm:block">{{ auth()->user()->name }}</span>
+                        <x-admin.icon name="chevron-down" class="h-4 w-4 text-slate-400 dark:text-slate-500" />
                     </button>
                     <div x-show="open" @click.outside="open = false" x-transition x-cloak
-                         class="absolute right-0 mt-2 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg">
-                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Môj profil</a>
+                         class="absolute right-0 mt-2 w-48 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-1 shadow-lg">
+                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800">Môj profil</a>
                         <form method="post" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="block w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50">Odhlásiť sa</button>
+                            <button type="submit" class="block w-full px-4 py-2 text-left text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800">Odhlásiť sa</button>
                         </form>
                     </div>
                 </div>
@@ -103,15 +121,15 @@
         <main class="flex-1 px-4 py-6 sm:px-6 lg:px-8">
             @if (session('status'))
                 <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4000)" x-transition.opacity
-                     class="mb-5 flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
-                    <x-admin.icon name="check" class="h-5 w-5 text-emerald-600" />
+                     class="mb-5 flex items-center gap-3 rounded-xl border border-emerald-200 dark:border-emerald-500/30 bg-emerald-50 dark:bg-emerald-500/10 px-4 py-3 text-sm text-emerald-800 dark:text-emerald-300">
+                    <x-admin.icon name="check" class="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                     <span>{{ session('status') }}</span>
-                    <button class="ml-auto text-emerald-700/70 hover:text-emerald-900" @click="show = false" aria-label="Zavrieť">✕</button>
+                    <button class="ml-auto text-emerald-700/70 dark:text-emerald-300/70 hover:text-emerald-900 dark:hover:text-emerald-200" @click="show = false" aria-label="Zavrieť">✕</button>
                 </div>
             @endif
 
             @if ($errors->any())
-                <div class="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+                <div class="mb-5 rounded-xl border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 px-4 py-3 text-sm text-red-800 dark:text-red-300">
                     <p class="font-semibold">Formulár obsahuje chyby:</p>
                     <ul class="mt-1 list-inside list-disc">
                         @foreach ($errors->all() as $error)
@@ -123,9 +141,9 @@
 
             <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
                 <div>
-                    <h1 class="text-2xl font-bold tracking-tight text-slate-900">{{ $title }}</h1>
+                    <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{{ $title }}</h1>
                     @isset($subtitle)
-                        <p class="mt-1 text-sm text-slate-500">{{ $subtitle }}</p>
+                        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ $subtitle }}</p>
                     @endisset
                 </div>
                 @isset($actions)
