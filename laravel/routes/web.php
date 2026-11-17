@@ -7,11 +7,14 @@ use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\LinkController;
 use App\Http\Controllers\Admin\MembershipFeeController;
 use App\Http\Controllers\Admin\TextBlockController;
+use App\Http\Controllers\CookieConsentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
+Route::get('/zasady-cookies', [CookieConsentController::class, 'policy'])->name('cookies.policy');
+Route::post('/cookies/suhlas', [CookieConsentController::class, 'store'])->middleware('throttle:30,1')->name('cookies.consent');
 
 // Breeze redirects here after login; the admin dashboard is the only "home".
 Route::get('/dashboard', fn () => redirect()->route('admin.dashboard'))

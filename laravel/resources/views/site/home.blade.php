@@ -21,6 +21,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>SSTN – Slovenská spoločnosť pre technickú normalizáciu</title>
   <meta name="description" content="Slovenská spoločnosť pre technickú normalizáciu (SSTN), člen ZSVTS. Odborné semináre, Stretnutia normalizátorov Slovenska, členstvo a kontakt.">
   <link rel="canonical" href="{{ url('/') }}">
@@ -467,9 +468,15 @@
 
   <div class="container site-footer__bottom">
     <p>© {{ now()->year }} Slovenská spoločnosť pre technickú normalizáciu</p>
+    <p class="site-footer__legal">
+      <a href="{{ route('cookies.policy') }}">Zásady cookies</a>
+      <button type="button" class="cc-link" data-cc-open>Nastavenia cookies</button>
+    </p>
     <p>Fotografie: Unsplash</p>
   </div>
 </footer>
+
+@include('site.partials.cookie-consent')
 
 <script src="{{ asset('assets/js/main.js') }}" defer></script>
 </body>
