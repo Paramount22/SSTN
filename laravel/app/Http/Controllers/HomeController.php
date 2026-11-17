@@ -15,15 +15,24 @@ class HomeController extends Controller
     public function __invoke(): View
     {
         $upcoming = Event::published()->upcoming()->with('attachments')->get();
+        $articles = Article::published()->orderByDesc('published_on')->orderByDesc('id')->take(3)->get();
+        $links = Link::orderBy('sort')->orderBy('id')->get()->groupBy('group');
+
+        // Sections the page renders; menu anchors to a missing section are hidden.
+        $sections = ['podujatia', 'o-nas', 'clenstvo', 'kontakt', ...($articles->isNotEmpty() ? ['aktuality'] : [])];
+        $menu = $links->get('menu', collect())
+            ->reject(fn (Link $link) => $link->is_anchor && ! in_array(ltrim($link->url, '#'), $sections, true))
+            ->values();
 
         return view('site.home', [
             'text' => TextBlock::pluck('value', 'key'),
             'upcoming' => $upcoming,
             'pastByYear' => Event::published()->past()->with('attachments')->get()
                 ->groupBy(fn (Event $event) => $event->starts_on->year),
-            'articles' => Article::published()->orderByDesc('published_on')->orderByDesc('id')->take(3)->get(),
+            'articles' => $articles,
             'fees' => MembershipFee::orderBy('sort')->orderBy('id')->get(),
-            'links' => Link::orderBy('sort')->orderBy('id')->get()->groupBy('group'),
+            'links' => $links,
+            'menu' => $menu,
             'jsonLd' => $this->jsonLd($upcoming),
         ]);
     }

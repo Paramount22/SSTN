@@ -19,7 +19,8 @@
     </div>
     <div class="sm:col-span-2">
         <label for="url" class="block text-sm font-medium text-slate-700">Adresa <span class="text-red-500">*</span></label>
-        <input id="url" name="url" type="text" value="{{ old('url', $link->url) }}" required placeholder="https://… alebo /storage/…" class="{{ $input }}">
+        <input id="url" name="url" type="text" value="{{ old('url', $link->url) }}" required placeholder="https://…, /storage/… alebo #podujatia" class="{{ $input }}">
+        <p class="mt-1 text-xs text-slate-500">Sekcie úvodnej stránky: #podujatia, #aktuality, #o-nas, #clenstvo, #kontakt. Externé odkazy sa otvoria v novom okne.</p>
         <x-input-error :messages="$errors->get('url')" class="mt-1" />
     </div>
     <div class="sm:col-span-2">

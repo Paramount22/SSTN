@@ -2,6 +2,7 @@
 
 use App\Models\Article;
 use App\Models\Event;
+use App\Models\Link;
 use App\Models\TextBlock;
 use App\Models\User;
 use Database\Seeders\LinkSeeder;
@@ -73,4 +74,34 @@ test('event dates read naturally in Slovak', function () {
     expect(Event::factory()->make(['starts_on' => '2026-11-20', 'ends_on' => null])->date_long)->toBe('20. novembra 2026')
         ->and(Event::factory()->make(['starts_on' => '2025-03-20', 'ends_on' => '2025-03-21'])->date_long)->toBe('20. – 21. marca 2025')
         ->and(Event::factory()->make(['starts_on' => '2025-03-31', 'ends_on' => '2025-04-01'])->date_long)->toBe('31. marca – 1. apríla 2025');
+});
+
+test('header menu is built from the menu links in the admin', function () {
+    Link::create(['group' => 'menu', 'label' => 'Normy online', 'url' => 'https://www.normoff.gov.sk/', 'sort' => 9]);
+    Link::firstWhere(['group' => 'menu', 'label' => 'Kontakt'])->update(['label' => 'Napíšte nám']);
+
+    $this->get(route('home'))
+        ->assertSeeInOrder(['class="nav__link" href="#podujatia">Podujatia', 'href="#o-nas">O nás', 'Napíšte nám', 'Normy online'], false)
+        ->assertSee('href="https://www.normoff.gov.sk/" target="_blank" rel="noopener">Normy online', false);
+});
+
+test('menu items for a section that is not shown are hidden', function () {
+    $this->get(route('home'))->assertDontSee('href="#aktuality"', false);
+
+    Link::create(['group' => 'menu', 'label' => 'Neexistuje', 'url' => '#neexistuje']);
+    $this->get(route('home'))->assertDontSee('Neexistuje');
+});
+
+test('admin can add a menu link pointing to a section', function () {
+    $admin = User::factory()->admin()->create();
+
+    $this->actingAs($admin)->post(route('admin.links.store'), [
+        'group' => 'menu', 'label' => 'Poslanie', 'url' => '#o-nas', 'sort' => 2,
+    ])->assertSessionHasNoErrors();
+
+    $this->actingAs($admin)->post(route('admin.links.store'), [
+        'group' => 'menu', 'label' => 'Zlé', 'url' => 'javascript:alert(1)',
+    ])->assertSessionHasErrors('url');
+
+    $this->get(route('home'))->assertSee('href="#o-nas">Poslanie', false);
 });

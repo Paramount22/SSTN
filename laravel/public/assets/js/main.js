@@ -21,7 +21,8 @@
   window.matchMedia('(min-width: 961px)').addEventListener('change', (e) => { if (e.matches) setMenu(false); });
 
   /* Active section: sliding white pill in the navigation */
-  const links = [...document.querySelectorAll('.nav__link')];
+  // Only in-page links (#section) take part; other menu links are plain links.
+  const links = [...document.querySelectorAll('.nav__link')].filter((l) => l.getAttribute('href').startsWith('#'));
   const indicator = document.querySelector('[data-nav-indicator]');
   const sections = links.map((l) => document.querySelector(l.getAttribute('href')));
   let active = null;

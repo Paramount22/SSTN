@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 class Link extends Model
 {
     public const GROUPS = [
+        'menu' => 'Hlavné menu',
         'partner' => 'Partneri',
         'footer' => 'Odkazy v pätičke',
         'video' => 'Videá',
@@ -25,6 +26,12 @@ class Link extends Model
     public function getGroupLabelAttribute(): string
     {
         return static::GROUPS[$this->group] ?? $this->group;
+    }
+
+    /** Link to a section of the home page, e.g. "#podujatia". */
+    public function getIsAnchorAttribute(): bool
+    {
+        return Str::startsWith($this->url, '#');
     }
 
     public function getIsExternalAttribute(): bool

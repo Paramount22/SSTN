@@ -18,7 +18,7 @@ class LinkRequest extends FormRequest
         return [
             'group' => ['required', Rule::in(array_keys(Link::GROUPS))],
             'label' => ['required', 'string', 'max:160'],
-            'url' => ['required', 'string', 'max:500', 'regex:#^(https?://|/|mailto:)#i'],
+            'url' => ['required', 'string', 'max:500', 'regex:~^(https?://|/|mailto:|#[\w-]+$)~i'],
             'description' => ['nullable', 'string', 'max:255'],
             'sort' => ['nullable', 'integer', 'min:0', 'max:999'],
         ];
@@ -26,7 +26,7 @@ class LinkRequest extends FormRequest
 
     public function messages(): array
     {
-        return ['url.regex' => 'Adresa musí začínať na https://, http://, / alebo mailto:.'];
+        return ['url.regex' => 'Adresa musí začínať na https://, http://, /, mailto: alebo # (sekcia stránky, napr. #podujatia).'];
     }
 
     public function attributes(): array

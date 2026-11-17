@@ -7,12 +7,18 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
-/** Sidebar/footer links and partners from sstn.sk, plus the membership form file. */
+/** Header menu, sidebar/footer links and partners from sstn.sk, plus the membership form file. */
 class LinkSeeder extends Seeder
 {
     public function run(): void
     {
         $links = [
+            // header menu – sections of the home page
+            ['menu', 'Podujatia', '#podujatia', null],
+            ['menu', 'Aktuality', '#aktuality', null],
+            ['menu', 'O nás', '#o-nas', null],
+            ['menu', 'Členstvo', '#clenstvo', null],
+            ['menu', 'Kontakt', '#kontakt', null],
             // partners (header strip)
             ['partner', 'ZSVTS', 'https://www.zsvts.sk/', 'Zväz slovenských vedeckotechnických spoločností'],
             ['partner', 'ÚNMS SR', 'https://www.normoff.gov.sk/', 'Úrad pre normalizáciu, metrológiu a skúšobníctvo SR'],

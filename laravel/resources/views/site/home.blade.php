@@ -14,13 +14,7 @@
     $iban = preg_replace('/\s+/', '', $t('membership.iban'));
     $email = $t('contact.email');
 
-    $sections = array_filter([
-        'podujatia' => 'Podujatia',
-        'aktuality' => $articles->isNotEmpty() ? 'Aktuality' : null,
-        'o-nas' => 'O nás',
-        'clenstvo' => 'Členstvo',
-        'kontakt' => 'Kontakt',
-    ]);
+    $target = fn ($link) => $link->is_external ? ' target="_blank" rel="noopener"' : '';
 @endphp
 <!doctype html>
 <html lang="sk">
@@ -59,8 +53,8 @@
 
     <nav class="nav" aria-label="Hlavná navigácia">
       <ul class="nav__list" data-nav>
-        @foreach ($sections as $id => $label)
-          <li><a class="nav__link" href="#{{ $id }}">{{ $label }}</a></li>
+        @foreach ($menu as $item)
+          <li><a class="nav__link" href="{{ $item->url }}"{!! $target($item) !!}>{{ $item->label }}</a></li>
         @endforeach
         <li class="nav__indicator" aria-hidden="true" data-nav-indicator></li>
       </ul>
@@ -76,8 +70,8 @@
 
   <div class="mobile-menu" id="mobile-menu" hidden data-menu>
     <ul>
-      @foreach ($sections as $id => $label)
-        <li><a href="#{{ $id }}">{{ $label }}</a></li>
+      @foreach ($menu as $item)
+        <li><a href="{{ $item->url }}"{!! $target($item) !!}>{{ $item->label }}</a></li>
       @endforeach
     </ul>
     <a class="btn btn--navy" href="#clenstvo">Stať sa členom</a>
@@ -451,8 +445,8 @@
     <nav class="site-footer__col" aria-label="Na stránke">
       <p class="label">Na stránke</p>
       <ul>
-        @foreach ($sections as $id => $label)
-          <li><a href="#{{ $id }}">{{ $label }}</a></li>
+        @foreach ($menu as $item)
+          <li><a href="{{ $item->url }}"{!! $target($item) !!}>{{ $item->label }}</a></li>
         @endforeach
       </ul>
     </nav>
