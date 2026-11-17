@@ -9,6 +9,11 @@
         </p>
     </header>
 
+    @if (auth()->user()->isLastAdmin())
+        <p class="rounded-md bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            Toto je jediný administrátorský účet, preto ho nemožno zmazať. Bez neho by sa do administrácie nedalo prihlásiť.
+        </p>
+    @else
     <x-danger-button
         x-data=""
         x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
@@ -52,4 +57,5 @@
             </div>
         </form>
     </x-modal>
+    @endif
 </section>

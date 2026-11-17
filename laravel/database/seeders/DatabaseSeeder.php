@@ -19,15 +19,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::query()->updateOrCreate(
+        $admin = User::query()->updateOrCreate(
             ['email' => 'admin@sstn.test'],
             [
                 'name' => 'Admin SSTN',
                 'password' => Hash::make('Sstn-dev-2026!'),
                 'email_verified_at' => now(),
-                'is_admin' => true,
             ],
         );
+        $admin->forceFill(['is_admin' => true])->save();
 
         $this->call([
             TextBlockSeeder::class,

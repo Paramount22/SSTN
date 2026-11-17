@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -47,6 +48,13 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+
+        // Deleting the only admin would lock everyone out of /admin.
+        if ($user->isLastAdmin()) {
+            throw ValidationException::withMessages([
+                'password' => 'Účet jediného administrátora nemožno zmazať.',
+            ])->errorBag('userDeletion');
+        }
 
         Auth::logout();
 
