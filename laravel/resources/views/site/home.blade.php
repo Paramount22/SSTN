@@ -36,7 +36,7 @@
 
   <link rel="preload" href="{{ asset('assets/fonts/archivo-latin-standard-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ asset('assets/fonts/instrument-sans-latin-standard-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+  <link rel="stylesheet" href="{{ \App\Support\Assets::url('assets/css/style.css') }}">
   <script>document.documentElement.classList.add('js')</script>
 
   <script type="application/ld+json">@json($jsonLd, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)</script>
@@ -470,7 +470,10 @@
     <p>© {{ now()->year }} Slovenská spoločnosť pre technickú normalizáciu</p>
     <p class="site-footer__legal">
       <a href="{{ route('cookies.policy') }}">Zásady cookies</a>
-      <button type="button" class="cc-link" data-cc-open>Nastavenia cookies</button>
+      <button type="button" class="cookie-settings" data-cc-open>
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h8m4 0h2M3 14h2m4 0h8"/><circle cx="13" cy="6" r="2"/><circle cx="7" cy="14" r="2"/></svg>
+        Nastavenia cookies
+      </button>
     </p>
     <p>Fotografie: Unsplash</p>
   </div>
@@ -478,6 +481,6 @@
 
 @include('site.partials.cookie-consent')
 
-<script src="{{ asset('assets/js/main.js') }}" defer></script>
+<script src="{{ \App\Support\Assets::url('assets/js/main.js') }}" defer></script>
 </body>
 </html>

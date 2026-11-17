@@ -87,4 +87,4 @@
   </script>
 @endif
 
-<script src="{{ asset('assets/js/cookie-consent.js') }}" defer></script>
+<script src="{{ \App\Support\Assets::url('assets/js/cookie-consent.js') }}" defer></script>

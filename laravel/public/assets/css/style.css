@@ -1572,9 +1572,24 @@ a { color: var(--blue-ink); text-underline-offset: .2em; }
 
 .cc-dialog__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .5rem; padding-top: .25rem; }
 
-.site-footer__legal { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem 1.25rem; }
-.site-footer__legal a { color: inherit; }
-.site-footer__legal .cc-link { padding: 0; font: inherit; color: inherit; }
+.site-footer__legal { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; }
+.site-footer__legal a { color: inherit; text-decoration: none; }
+.site-footer__legal a:hover { color: var(--navy); text-decoration: underline; }
+.cookie-settings {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .4rem .85rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  font: 600 .8125rem/1.2 var(--font-body);
+  color: var(--navy);
+  cursor: pointer;
+  transition: border-color .2s, background-color .2s;
+}
+.cookie-settings:hover { border-color: rgba(0, 128, 208, .4); background: var(--blue-50); }
+.cookie-settings svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
 .site-footer--compact { padding-top: 0; }
 
 /* ---------- Cookie policy page ---------- */
@@ -1598,10 +1613,12 @@ a { color: var(--blue-ink); text-underline-offset: .2em; }
 .legal__back { grid-column: 3; justify-self: end; pointer-events: auto; }
 
 @media (max-width: 720px) {
-  .cc-banner { grid-template-columns: 1fr; }
-  .cc-banner__actions { justify-content: stretch; }
-  .cc-banner__actions .btn { flex: 1 1 40%; justify-content: center; }
-  .cc-banner__actions .cc-link { flex-basis: 100%; }
+  .cc-banner { grid-template-columns: 1fr; gap: .75rem; padding: 16px 18px; border-radius: 18px; }
+  .cc-banner p { font-size: .875rem; line-height: 1.5; }
+  .cc-banner .cc-banner__title { margin-bottom: .2rem; font-size: 1rem; }
+  .cc-banner__actions { justify-content: stretch; gap: .4rem; }
+  .cc-banner__actions .btn { flex: 1 1 40%; justify-content: center; padding: .7rem 1rem; font-size: .875rem; }
+  .cc-banner__actions .cc-link { flex-basis: 100%; padding: .2rem; }
   .cc-dialog__actions .btn { flex: 1 1 100%; justify-content: center; }
   .cc-table thead { display: none; }
   .cc-table tr { display: grid; grid-template-columns: 1fr 1fr; padding: .4rem 0; border-top: 1px solid var(--line); }
