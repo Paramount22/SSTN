@@ -7,12 +7,11 @@ use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\LinkController;
 use App\Http\Controllers\Admin\MembershipFeeController;
 use App\Http\Controllers\Admin\TextBlockController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', HomeController::class)->name('home');
 
 // Breeze redirects here after login; the admin dashboard is the only "home".
 Route::get('/dashboard', fn () => redirect()->route('admin.dashboard'))

@@ -92,6 +92,24 @@ class Event extends Model
             || ($this->ends_on ?? $this->starts_on)->isFuture();
     }
 
+    /** Public date: the free-text override, or "20. novembra 2026" / "20. – 21. marca 2025". */
+    public function getDateLongAttribute(): string
+    {
+        if (filled($this->date_text)) {
+            return $this->date_text;
+        }
+
+        if ($this->ends_on && ! $this->ends_on->isSameDay($this->starts_on)) {
+            $start = $this->starts_on->isSameMonth($this->ends_on)
+                ? $this->starts_on->format('j.')
+                : $this->starts_on->translatedFormat('j. F');
+
+            return $start.' – '.$this->ends_on->translatedFormat('j. F Y');
+        }
+
+        return $this->starts_on->translatedFormat('j. F Y');
+    }
+
     /** Human date: the free-text override, or "20. 11. 2026" / "8. – 9. 4. 2025". */
     public function getDateLabelAttribute(): string
     {

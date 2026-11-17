@@ -57,7 +57,7 @@
         </nav>
 
         <div class="border-t border-slate-200 p-4">
-            <a href="{{ url('/') }}" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm text-slate-500 hover:text-sstn-blue">
+            <a href="{{ route('home') }}" target="_blank" rel="noopener" class="flex items-center gap-2 text-sm text-slate-500 hover:text-sstn-blue">
                 <x-admin.icon name="external" class="h-4 w-4" /> Zobraziť web
             </a>
         </div>
