@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 class EventAttachment extends Model
 {
@@ -34,6 +35,10 @@ class EventAttachment extends Model
     public static function fromUpload(Event $event, UploadedFile $file, ?string $label = null): static
     {
         $ext = strtolower($file->getClientOriginalExtension());
+        // The stored name keeps this extension, and the web server picks the content type from it.
+        if (! in_array($ext, self::ALLOWED_EXTENSIONS, true)) {
+            throw new InvalidArgumentException("Nepovolená prípona súboru: .{$ext}");
+        }
         $base = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME), '_') ?: 'subor';
         $dir = 'akcie/'.$event->starts_on->year;
         $disk = Storage::disk('public');

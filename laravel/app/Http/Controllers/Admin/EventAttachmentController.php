@@ -15,7 +15,7 @@ class EventAttachmentController extends Controller
     {
         $data = $request->validate([
             'label' => ['nullable', 'string', 'max:120'],
-            'file' => ['required', File::types(EventAttachment::ALLOWED_EXTENSIONS)->max(20 * 1024)],
+            'file' => ['required', File::types(EventAttachment::ALLOWED_EXTENSIONS)->extensions(EventAttachment::ALLOWED_EXTENSIONS)->max(20 * 1024)],
         ], [], ['file' => 'súbor', 'label' => 'názov']);
 
         EventAttachment::fromUpload($event, $data['file'], $data['label'] ?? null);

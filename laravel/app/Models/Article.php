@@ -14,6 +14,7 @@ use Intervention\Image\Encoders\PngEncoder;
 use Intervention\Image\Encoders\WebpEncoder;
 use Intervention\Image\Exceptions\MissingDependencyException;
 use Intervention\Image\Laravel\Facades\Image;
+use InvalidArgumentException;
 
 class Article extends Model
 {
@@ -79,6 +80,10 @@ class Article extends Model
     {
         $ext = strtolower($file->getClientOriginalExtension() ?: $file->guessExtension() ?: 'jpg');
         $ext = $ext === 'jpeg' ? 'jpg' : $ext;
+        // The stored name keeps this extension, and the web server picks the content type from it.
+        if (! in_array($ext, self::IMAGE_TYPES, true)) {
+            throw new InvalidArgumentException("Nepovolená prípona fotografie: .{$ext}");
+        }
         $base = Str::slug($this->title, '_') ?: 'foto';
         $dir = 'clanky/'.$this->published_on->year;
         $disk = Storage::disk('public');

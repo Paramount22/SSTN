@@ -40,7 +40,7 @@ class EventRequest extends FormRequest
             'body' => ['nullable', 'string', 'max:20000'],
             'is_published' => ['boolean'],
             'files' => ['nullable', 'array', 'max:10'],
-            'files.*' => [File::types(EventAttachment::ALLOWED_EXTENSIONS)->max(20 * 1024)],
+            'files.*' => [File::types(EventAttachment::ALLOWED_EXTENSIONS)->extensions(EventAttachment::ALLOWED_EXTENSIONS)->max(20 * 1024)],
         ];
     }
 

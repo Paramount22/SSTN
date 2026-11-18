@@ -20,7 +20,17 @@ php artisan migrate --seed
 php artisan serve
 ```
 
-Seeder vytvorí lokálny administrátorský účet `admin@sstn.test` (heslo je v `database/seeders/DatabaseSeeder.php`) a naplní obsah z pôvodného webu (podujatia 2025–2026 s PDF, texty, členské príspevky, odkazy).
+Seeder naplní obsah z pôvodného webu (podujatia 2025–2026 s PDF, texty, členské príspevky, odkazy). Len v prostredí `local` (a v testoch) vytvorí aj vývojový administrátorský účet `admin@sstn.test` – jeho heslo je verejne v Gite, preto sa mimo lokálneho počítača nikdy nevytvára.
+
+### Administrátor na serveri
+
+Na serveri (`APP_ENV=production`) vytvorte administrátora príkazom, heslo zadáte do výzvy (neuloží sa nikde v kóde ani v histórii príkazov):
+
+```bash
+php artisan admin:create meno@sstn.sk --name="Meno Priezvisko"
+```
+
+Rovnaký príkaz nastaví existujúcemu účtu nové heslo a práva administrátora (napr. po zabudnutí hesla).
 
 Administrácia beží na `/admin` (prihlásenie na `/login`). Verejná registrácia je vypnutá; prístup má len používateľ s `is_admin = 1`. Súbory k podujatiam sa ukladajú do `storage/app/public/akcie/<rok>/` a sú dostupné na `/storage/akcie/<rok>/…` – rovnaké adresy ako na starom webe (`php artisan storage:link`).
 
