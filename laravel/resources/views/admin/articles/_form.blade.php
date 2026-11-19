@@ -23,9 +23,10 @@
         </div>
 
         <div>
-            <label for="body" class="block text-sm font-medium text-slate-700 dark:text-slate-200">Text článku</label>
-            <textarea id="body" name="body" rows="12" class="{{ $input }}" placeholder="Česká společnost pro technickou normalizaci (ČSTN) a Slovenská spoločnosť pre technickú normalizáciu (SSTN) zorganizovali…">{{ old('body', $article->body) }}</textarea>
-            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Odseky oddeľte prázdnym riadkom.</p>
+            <label id="body-label" class="block text-sm font-medium text-slate-700 dark:text-slate-200">Text článku</label>
+            <x-admin.rich-editor name="body" class="mt-1" :value="old('body', $article->body)" label="Text článku" aria-labelledby="body-label"
+                                 placeholder="Česká společnost pro technickou normalizaci (ČSTN) a Slovenská spoločnosť pre technickú normalizáciu (SSTN) zorganizovali…" />
+            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Odkaz pridáte označením textu a tlačidlom s reťazou. Nadpisy H2 a H3 použite na členenie dlhšieho textu.</p>
             <x-input-error :messages="$errors->get('body')" class="mt-1" />
         </div>
 

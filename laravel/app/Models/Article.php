@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Support\RichText;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
@@ -135,14 +137,14 @@ class Article extends Model
         return $this->image_path ? Storage::disk('public')->url($this->image_path) : null;
     }
 
-    public function getExcerptAttribute(): string
+    /** HTML from the editor, always sanitized on write, so it can be printed unescaped. */
+    protected function body(): Attribute
     {
-        return Str::limit(trim(preg_replace('/\s+/', ' ', (string) $this->body)), 180);
+        return Attribute::make(set: fn (?string $value) => RichText::sanitize($value));
     }
 
-    /** @return list<string> */
-    public function getParagraphsAttribute(): array
+    public function getExcerptAttribute(): string
     {
-        return array_values(array_filter(array_map('trim', preg_split('/\R\s*\R/', (string) $this->body))));
+        return Str::limit(RichText::toPlainText($this->body), 180);
     }
 }

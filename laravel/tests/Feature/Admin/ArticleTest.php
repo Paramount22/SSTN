@@ -41,7 +41,7 @@ test('admin can create an article with a photo', function () {
         ->and($article->image_path)->toBe('clanky/2024/seminar_trinec_2024.png')
         ->and($article->image_width)->toBe(3)
         ->and($article->image_height)->toBe(2)
-        ->and($article->paragraphs)->toBe(['Prvý odsek.', 'Druhý odsek.']);
+        ->and($article->body)->toBe('<p>Prvý odsek.</p><p>Druhý odsek.</p>');
 
     Storage::disk('public')->assertExists('clanky/2024/seminar_trinec_2024.png');
 });

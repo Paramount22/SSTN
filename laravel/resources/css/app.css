@@ -28,3 +28,18 @@ dialog[data-confirm-dialog][open]::backdrop { animation: confirm-fade .18s ease-
     dialog[data-confirm-dialog][open],
     dialog[data-confirm-dialog][open]::backdrop { animation: none; }
 }
+
+/* Rich text editor content (components/admin/rich-editor). */
+.rich-text { @apply leading-relaxed text-slate-800 dark:text-slate-100; }
+.rich-text > * + * { @apply mt-3; }
+.rich-text h2 { @apply mt-5 text-lg font-bold text-slate-900 dark:text-white; }
+.rich-text h3 { @apply mt-4 text-base font-semibold text-slate-900 dark:text-white; }
+.rich-text ul { @apply list-disc pl-6; }
+.rich-text ol { @apply list-decimal pl-6; }
+.rich-text li > p { @apply m-0; }
+.rich-text blockquote { @apply border-l-4 border-sstn-blue/40 pl-4 italic text-slate-600 dark:text-slate-300; }
+.rich-text a { @apply text-sstn-blue underline underline-offset-2 dark:text-sky-400; }
+.rich-text p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    @apply pointer-events-none float-left h-0 text-slate-400 dark:text-slate-500;
+}

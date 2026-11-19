@@ -28,7 +28,7 @@ class ArticleRequest extends FormRequest
             'title' => ['required', 'string', 'max:200'],
             'slug' => ['nullable', 'string', 'max:200', 'alpha_dash', Rule::unique('articles', 'slug')->ignore($this->route('article')?->id)],
             'published_on' => ['required', 'date'],
-            'body' => ['nullable', 'string', 'max:20000'],
+            'body' => ['nullable', 'string', 'max:50000'], // HTML from the editor, sanitized by the model
             'image' => ['nullable', File::image()->types(Article::IMAGE_TYPES)->extensions(Article::IMAGE_TYPES)->max(Article::IMAGE_MAX_KB)],
             'image_alt' => ['nullable', 'string', 'max:255'],
             'remove_image' => ['boolean'],

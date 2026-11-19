@@ -294,11 +294,8 @@
               <div class="news-card__body">
                 <p class="news-card__date"><time datetime="{{ $article->published_on->toDateString() }}">{{ $article->published_on->translatedFormat('j. F Y') }}</time></p>
                 <h3 class="news-card__title">{{ $article->title }}</h3>
-                <div class="news-card__text">
-                  @foreach ($article->paragraphs as $paragraph)
-                    <p>{{ $paragraph }}</p>
-                  @endforeach
-                </div>
+                {{-- Unescaped on purpose: Article sanitizes body to an allowlist on every write (App\Support\RichText). --}}
+                <div class="news-card__text">{!! $article->body !!}</div>
               </div>
             </article>
           @endforeach
