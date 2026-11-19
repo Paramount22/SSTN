@@ -504,7 +504,7 @@
         Nastavenia cookies
       </button>
     </p>
-    <p>Fotografie: Unsplash</p>
+    
   </div>
 </footer>
 
