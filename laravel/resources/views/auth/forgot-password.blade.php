@@ -1,25 +1,18 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-    </div>
+    <x-slot:heading>Zabudnuté heslo</x-slot:heading>
+    <x-slot:intro>Zadajte e-mail, ktorým sa prihlasujete. Pošleme vám naň odkaz, cez ktorý si nastavíte nové heslo.</x-slot:intro>
 
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    <x-auth-session-status class="mb-6" :status="session('status')" />
 
-    <form method="POST" action="{{ route('password.email') }}">
+    <form method="POST" action="{{ route('password.email') }}" class="space-y-5">
         @csrf
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+        <x-auth.field name="email" type="email" label="E-mail" required autofocus autocomplete="username" />
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
-        </div>
+        <x-auth.button>Poslať odkaz na zmenu hesla</x-auth.button>
     </form>
+
+    <p class="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
+        Spomenuli ste si? <a href="{{ route('login') }}" class="font-medium text-sstn-blue hover:underline dark:text-sky-400">Prihláste sa</a>
+    </p>
 </x-guest-layout>
