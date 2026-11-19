@@ -761,12 +761,27 @@ a { color: var(--blue-ink); text-underline-offset: .2em; }
 .partners__list a { display: inline-block; border-radius: 8px; }
 .partners__list img {
   width: auto;
+  max-width: 100%;
   height: 46px;
+  object-fit: contain;
+  object-position: left center;
   filter: grayscale(1) contrast(1.2);
   opacity: .9;
   transition: filter .3s, opacity .3s;
 }
 .partners__list a:hover img { filter: none; opacity: 1; }
+/* Mark without a name in it (ČSTN): small caps caption beside it, like the ZSVTS lettering. */
+.partners__list .partner-logo--caption { display: inline-flex; align-items: center; gap: .55rem; text-decoration: none; }
+.partners__list .partner-logo--caption img { flex: none; }
+.partner-logo--caption span {
+  max-width: 11rem;
+  font-size: .6rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: #63676e;
+}
 .wordmark strong {
   display: block;
   font-family: var(--font-display);

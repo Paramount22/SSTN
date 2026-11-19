@@ -151,11 +151,36 @@
           <p>Podujatia pripravujeme spolu s partnermi zo Slovenska aj Česka.</p>
         </div>
         <ul class="partners__list">
+          @php
+            // Partner logos in public/assets/img, matched by the link's domain: [file, width, height, caption?].
+            // caption = the mark has no name in it, so the partner's description is set next to it.
+            // Partners without a logo show their name and description.
+            $partnerLogos = [
+              'zsvts.sk' => ['assets/img/zsvts-logo.png', 325, 95],
+              'normoff.gov.sk' => ['assets/img/partners/unms-sr.webp', 509, 138],
+              'cstn.cz' => ['assets/img/partners/cstn.png', 71, 63, true],
+              'minedu.sk' => ['assets/img/partners/msvvam-sr.svg', 1702, 536],
+            ];
+            $logoFor = function (string $url) use ($partnerLogos) {
+              $host = (string) parse_url($url, PHP_URL_HOST);
+              foreach ($partnerLogos as $domain => $logo) {
+                if ($host === $domain || Str::endsWith($host, '.'.$domain)) {
+                  return $logo;
+                }
+              }
+              return null;
+            };
+          @endphp
           @foreach ($links->get('partner', collect()) as $partner)
-            @if (Str::contains($partner->url, 'zsvts.sk'))
+            @if ($logo = $logoFor($partner->url))
               <li>
-                <a href="{{ $partner->url }}" target="_blank" rel="noopener" title="{{ $partner->description ?: $partner->label }}">
-                  <img src="{{ asset('assets/img/zsvts-logo.png') }}" width="325" height="95" alt="{{ $partner->label }} logo" loading="lazy">
+                <a href="{{ $partner->url }}" target="_blank" rel="noopener" title="{{ $partner->description ?: $partner->label }}" @class(['partner-logo--caption' => $logo[3] ?? false])>
+                  @if ($logo[3] ?? false)
+                    <img src="{{ asset($logo[0]) }}" width="{{ $logo[1] }}" height="{{ $logo[2] }}" alt="{{ $partner->label }}">
+                    <span>{{ $partner->description ?: $partner->label }}</span>
+                  @else
+                    <img src="{{ asset($logo[0]) }}" width="{{ $logo[1] }}" height="{{ $logo[2] }}" alt="{{ $partner->description ?: $partner->label }}">
+                  @endif
                 </a>
               </li>
             @else
