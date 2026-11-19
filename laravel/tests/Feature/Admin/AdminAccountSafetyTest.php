@@ -86,7 +86,7 @@ test('the only admin cannot delete their account', function () {
 
     $this->actingAs($admin)->get('/profile')
         ->assertSee('jediný administrátorský účet')
-        ->assertDontSee('confirm-user-deletion');
+        ->assertDontSee('Zmazať môj účet');
 
     $this->actingAs($admin)->from('/profile')->delete('/profile', ['password' => 'password'])
         ->assertSessionHasErrorsIn('userDeletion', 'password')
@@ -100,7 +100,7 @@ test('an admin can delete their account when another admin remains', function ()
     $admin = User::factory()->admin()->create();
     User::factory()->admin()->create();
 
-    $this->actingAs($admin)->get('/profile')->assertSee('confirm-user-deletion');
+    $this->actingAs($admin)->get('/profile')->assertSee('Zmazať môj účet');
 
     $this->actingAs($admin)->delete('/profile', ['password' => 'password'])
         ->assertSessionHasNoErrors()
