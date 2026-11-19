@@ -13,7 +13,7 @@ test('unknown addresses show the branded 404 page', function () {
 
 test('missing admin records also get the 404 page', function () {
     $this->actingAs(User::factory()->admin()->create())
-        ->get('/admin/events/999999/edit')
+        ->get(route('admin.events.edit', 999999))
         ->assertNotFound()
         ->assertSee('MIMO TOLERANCIE');
 });

@@ -32,7 +32,7 @@ php artisan admin:create meno@sstn.sk --name="Meno Priezvisko"
 
 Rovnaký príkaz nastaví existujúcemu účtu nové heslo a práva administrátora (napr. po zabudnutí hesla).
 
-Administrácia beží na `/admin` (prihlásenie na `/login`). Verejná registrácia je vypnutá; prístup má len používateľ s `is_admin = 1`. Súbory k podujatiam sa ukladajú do `storage/app/public/akcie/<rok>/` a sú dostupné na `/storage/akcie/<rok>/…` – rovnaké adresy ako na starom webe (`php artisan storage:link`).
+Administrácia, prihlásenie, zabudnuté heslo aj profil bežia pod tajnou cestou z `.env` (`ADMIN_PATH`, predvolene `admin`): napr. pri `ADMIN_PATH=sprava-7k2q9x` je prihlásenie na `/sprava-7k2q9x/login`, a adresy `/admin`, `/login` či `/forgot-password` vrátia 404. Na serveri nastavte vlastnú, ťažko uhádnuteľnú hodnotu (len písmená, číslice a pomlčky), nikam ju nezverejňujte a po zmene spustite `php artisan config:cache` a `php artisan route:cache`. Tajná cesta len odfiltruje automatické skenery – administrácia je chránená prihlásením. Verejná registrácia je vypnutá; prístup má len používateľ s `is_admin = 1`. Súbory k podujatiam sa ukladajú do `storage/app/public/akcie/<rok>/` a sú dostupné na `/storage/akcie/<rok>/…` – rovnaké adresy ako na starom webe (`php artisan storage:link`).
 
 Fotografie k článkom (`storage/app/public/clanky/<rok>/`) sa pri nahraní zmenšia na max. 1600 px cez balík `intervention/image-laravel`. Server potrebuje rozšírenie PHP **GD** (alebo Imagick – `IMAGE_DRIVER` v `.env`). Bez neho sa fotografia uloží v pôvodnej veľkosti a do logu sa zapíše varovanie.
 

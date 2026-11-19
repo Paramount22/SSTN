@@ -3,20 +3,20 @@
 use App\Models\User;
 
 test('login errors are in Slovak', function () {
-    $this->from('/login')->post('/login', ['email' => '', 'password' => ''])
+    $this->from(route('login'))->post(route('login'), ['email' => '', 'password' => ''])
         ->assertSessionHasErrors([
             'email' => 'Pole e-mail je povinné.',
             'password' => 'Pole heslo je povinné.',
         ]);
 
-    $this->from('/login')->post('/login', ['email' => 'nie-je-email', 'password' => 'x'])
+    $this->from(route('login'))->post(route('login'), ['email' => 'nie-je-email', 'password' => 'x'])
         ->assertSessionHasErrors(['email' => 'Pole e-mail musí byť platná e-mailová adresa.']);
 });
 
 test('password change errors are in Slovak', function () {
     $user = User::factory()->admin()->create();
 
-    $this->actingAs($user)->from('/profile')->put('/password', [
+    $this->actingAs($user)->from(route('profile.edit'))->put(route('password.update'), [
         'current_password' => 'zle-heslo',
         'password' => 'kratke',
         'password_confirmation' => 'ine',
@@ -25,7 +25,7 @@ test('password change errors are in Slovak', function () {
         'password' => 'Potvrdenie poľa heslo sa nezhoduje.',
     ]);
 
-    $this->actingAs($user)->from('/profile')->put('/password', [
+    $this->actingAs($user)->from(route('profile.edit'))->put(route('password.update'), [
         'current_password' => 'password',
         'password' => 'kratke',
         'password_confirmation' => 'kratke',

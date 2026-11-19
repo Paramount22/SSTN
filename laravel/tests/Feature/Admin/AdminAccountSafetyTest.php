@@ -16,7 +16,7 @@ test('is_admin cannot be mass assigned', function () {
 test('a user cannot make themselves admin through the profile form', function () {
     $user = User::factory()->create();
 
-    $this->actingAs($user)->patch('/profile', [
+    $this->actingAs($user)->patch(route('profile.edit'), [
         'name' => 'Útočník', 'email' => $user->email, 'is_admin' => '1',
     ])->assertSessionHasNoErrors();
 
@@ -84,13 +84,13 @@ test('admin:create rejects weak or mismatched passwords', function () {
 test('the only admin cannot delete their account', function () {
     $admin = User::factory()->admin()->create();
 
-    $this->actingAs($admin)->get('/profile')
+    $this->actingAs($admin)->get(route('profile.edit'))
         ->assertSee('jediný administrátorský účet')
         ->assertDontSee('Zmazať môj účet');
 
-    $this->actingAs($admin)->from('/profile')->delete('/profile', ['password' => 'password'])
+    $this->actingAs($admin)->from(route('profile.edit'))->delete(route('profile.edit'), ['password' => 'password'])
         ->assertSessionHasErrorsIn('userDeletion', 'password')
-        ->assertRedirect('/profile');
+        ->assertRedirect(route('profile.edit'));
 
     expect($admin->fresh())->not->toBeNull();
     $this->assertAuthenticatedAs($admin);
@@ -100,9 +100,9 @@ test('an admin can delete their account when another admin remains', function ()
     $admin = User::factory()->admin()->create();
     User::factory()->admin()->create();
 
-    $this->actingAs($admin)->get('/profile')->assertSee('Zmazať môj účet');
+    $this->actingAs($admin)->get(route('profile.edit'))->assertSee('Zmazať môj účet');
 
-    $this->actingAs($admin)->delete('/profile', ['password' => 'password'])
+    $this->actingAs($admin)->delete(route('profile.edit'), ['password' => 'password'])
         ->assertSessionHasNoErrors()
         ->assertRedirect('/');
 
