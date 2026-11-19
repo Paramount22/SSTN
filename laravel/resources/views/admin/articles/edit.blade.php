@@ -4,7 +4,7 @@
         <a href="{{ route('admin.articles.index') }}" class="inline-flex items-center gap-2 rounded-full bg-white dark:bg-slate-900 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 ring-1 ring-slate-200 dark:ring-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">
             <x-admin.icon name="arrow-left" class="h-4 w-4" /> Späť na články
         </a>
-        <form method="post" action="{{ route('admin.articles.destroy', $article) }}" onsubmit="return confirm('Naozaj zmazať článok aj s fotografiou?')">
+        <form method="post" action="{{ route('admin.articles.destroy', $article) }}" data-confirm="Článok sa zmaže z webu aj s fotografiou." data-confirm-title="Zmazať článok?" data-confirm-item="{{ $article->title }}">
             @csrf @method('delete')
             <button class="inline-flex items-center gap-2 rounded-full bg-white dark:bg-slate-900 px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 ring-1 ring-red-200 dark:ring-red-500/30 hover:bg-red-50 dark:hover:bg-red-500/10">
                 <x-admin.icon name="trash" class="h-4 w-4" /> Zmazať

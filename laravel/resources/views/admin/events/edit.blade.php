@@ -4,7 +4,7 @@
         <a href="{{ route('admin.events.index') }}" class="inline-flex items-center gap-2 rounded-full bg-white dark:bg-slate-900 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 ring-1 ring-slate-200 dark:ring-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800">
             <x-admin.icon name="arrow-left" class="h-4 w-4" /> Späť na zoznam
         </a>
-        <form method="post" action="{{ route('admin.events.destroy', $event) }}" onsubmit="return confirm('Naozaj zmazať podujatie aj s prílohami?')">
+        <form method="post" action="{{ route('admin.events.destroy', $event) }}" data-confirm="Podujatie sa zmaže z webu spolu so všetkými prílohami." data-confirm-title="Zmazať podujatie?" data-confirm-item="{{ $event->title }}">
             @csrf @method('delete')
             <button class="inline-flex items-center gap-2 rounded-full bg-white dark:bg-slate-900 px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 ring-1 ring-red-200 dark:ring-red-500/30 hover:bg-red-50 dark:hover:bg-red-500/10">
                 <x-admin.icon name="trash" class="h-4 w-4" /> Zmazať
@@ -48,7 +48,7 @@
                                 <input type="number" name="sort" value="{{ $attachment->sort }}" min="0" class="w-14 rounded-lg border-slate-300 dark:border-slate-600 text-center text-sm" title="Poradie" aria-label="Poradie">
                                 <button type="submit" class="rounded-lg p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-sstn-navy dark:hover:text-sky-300" title="Uložiť názov"><x-admin.icon name="check" class="h-4 w-4" /></button>
                             </form>
-                            <form method="post" action="{{ route('admin.attachments.destroy', $attachment) }}" class="mt-1 text-right" onsubmit="return confirm('Zmazať prílohu „{{ addslashes($attachment->label) }}“?')">
+                            <form method="post" action="{{ route('admin.attachments.destroy', $attachment) }}" class="mt-1 text-right" data-confirm="Súbor sa natrvalo odstráni a jeho odkaz na webe prestane fungovať." data-confirm-title="Zmazať prílohu?" data-confirm-item="{{ $attachment->label }}">
                                 @csrf @method('delete')
                                 <button class="text-xs text-red-600 dark:text-red-400 hover:underline">Zmazať prílohu</button>
                             </form>

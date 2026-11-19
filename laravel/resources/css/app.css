@@ -18,3 +18,13 @@ html.dark {
         @apply border-slate-600 bg-slate-800 text-slate-100 placeholder:text-slate-500;
     }
 }
+
+/* Admin confirm dialog: short fade/scale-in. */
+dialog[data-confirm-dialog][open] { animation: confirm-in .18s ease-out; }
+dialog[data-confirm-dialog][open]::backdrop { animation: confirm-fade .18s ease-out; }
+@keyframes confirm-in { from { opacity: 0; transform: translateY(8px) scale(.97); } }
+@keyframes confirm-fade { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+    dialog[data-confirm-dialog][open],
+    dialog[data-confirm-dialog][open]::backdrop { animation: none; }
+}

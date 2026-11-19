@@ -51,7 +51,7 @@
                         </td>
                         <td class="whitespace-nowrap px-5 py-3 text-right">
                             <a href="{{ route('admin.events.edit', $event) }}" class="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-sstn-navy dark:hover:text-sky-300" title="Upraviť"><x-admin.icon name="pencil" class="h-4 w-4" /><span class="sr-only">Upraviť</span></a>
-                            <form method="post" action="{{ route('admin.events.destroy', $event) }}" class="inline" onsubmit="return confirm('Naozaj zmazať podujatie „{{ addslashes($event->title) }}“ aj s prílohami?')">
+                            <form method="post" action="{{ route('admin.events.destroy', $event) }}" class="inline" data-confirm="Podujatie sa zmaže z webu spolu so všetkými prílohami." data-confirm-title="Zmazať podujatie?" data-confirm-item="{{ $event->title }}">
                                 @csrf @method('delete')
                                 <button class="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-slate-600 dark:text-slate-300 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400" title="Zmazať"><x-admin.icon name="trash" class="h-4 w-4" /><span class="sr-only">Zmazať</span></button>
                             </form>

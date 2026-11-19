@@ -155,5 +155,35 @@
         </main>
     </div>
 </div>
+
+{{-- Confirmation for forms with data-confirm (see resources/js/app.js) --}}
+<div x-data="confirmDialog" x-on:submit.window.capture="intercept($event)">
+    <dialog x-ref="dialog" data-confirm-dialog @click.self="$refs.dialog.close()"
+            aria-labelledby="confirm-title" aria-describedby="confirm-text"
+            class="w-[calc(100%-2rem)] max-w-md overflow-hidden rounded-2xl bg-white p-0 text-slate-700 shadow-2xl backdrop:bg-slate-900/50 backdrop:backdrop-blur-sm dark:bg-slate-900 dark:text-slate-200 dark:ring-1 dark:ring-slate-800">
+        <div class="flex gap-4 p-6">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400">
+                <x-admin.icon name="trash" class="h-5 w-5" />
+            </span>
+            <div class="min-w-0 flex-1">
+                <h2 id="confirm-title" class="text-lg font-semibold text-slate-900 dark:text-white" x-text="title"></h2>
+                <p x-show="item" class="mt-3 break-words rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100" x-text="item"></p>
+                <p id="confirm-text" class="mt-3 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                    <span x-text="text"></span> Túto akciu nemožno vrátiť späť.
+                </p>
+            </div>
+        </div>
+        <div class="flex flex-col-reverse gap-2 border-t border-slate-100 bg-slate-50 px-6 py-4 sm:flex-row sm:justify-end dark:border-slate-800 dark:bg-slate-800/60">
+            <button type="button" x-ref="cancel" @click="$refs.dialog.close()"
+                    class="rounded-full bg-white px-4 py-2 text-sm font-medium text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-sstn-blue dark:bg-slate-900 dark:text-slate-200 dark:ring-slate-700 dark:hover:bg-slate-800">
+                Zrušiť
+            </button>
+            <button type="button" @click="confirm()"
+                    class="inline-flex items-center justify-center gap-2 rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-900">
+                <x-admin.icon name="trash" class="h-4 w-4" /> <span x-text="action"></span>
+            </button>
+        </div>
+    </dialog>
+</div>
 </body>
 </html>

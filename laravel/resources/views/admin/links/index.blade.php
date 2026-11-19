@@ -27,7 +27,7 @@
                                 @if ($link->description)<p class="truncate text-xs text-slate-400 dark:text-slate-500">{{ $link->description }}</p>@endif
                             </div>
                             <a href="{{ route('admin.links.edit', $link) }}" class="rounded-lg p-1.5 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-sstn-navy dark:hover:text-sky-300" title="Upraviť"><x-admin.icon name="pencil" class="h-4 w-4" /></a>
-                            <form method="post" action="{{ route('admin.links.destroy', $link) }}" onsubmit="return confirm('Zmazať odkaz „{{ addslashes($link->label) }}“?')">
+                            <form method="post" action="{{ route('admin.links.destroy', $link) }}" data-confirm="Odkaz zmizne z webu." data-confirm-title="Zmazať odkaz?" data-confirm-item="{{ $link->label }}">
                                 @csrf @method('delete')
                                 <button class="rounded-lg p-1.5 text-slate-500 dark:text-slate-400 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400" title="Zmazať"><x-admin.icon name="trash" class="h-4 w-4" /></button>
                             </form>

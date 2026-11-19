@@ -47,7 +47,7 @@
                             <a href="{{ route('admin.articles.edit', $article) }}" class="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-sstn-navy dark:hover:text-sky-300">
                                 <x-admin.icon name="pencil" class="h-4 w-4" /> Upraviť
                             </a>
-                            <form method="post" action="{{ route('admin.articles.destroy', $article) }}" onsubmit="return confirm('Naozaj zmazať článok „{{ addslashes($article->title) }}“ aj s fotografiou?')">
+                            <form method="post" action="{{ route('admin.articles.destroy', $article) }}" data-confirm="Článok sa zmaže z webu aj s fotografiou." data-confirm-title="Zmazať článok?" data-confirm-item="{{ $article->title }}">
                                 @csrf @method('delete')
                                 <button class="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-sm text-slate-600 dark:text-slate-300 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400">
                                     <x-admin.icon name="trash" class="h-4 w-4" /> Zmazať
