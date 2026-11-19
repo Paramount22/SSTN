@@ -684,7 +684,7 @@ a { color: var(--blue-ink); text-underline-offset: .2em; }
 .float-card--side {
   right: clamp(16px, 3vw, 40px);
   bottom: clamp(76px, 9vw, 116px);
-  width: min(300px, 34%);
+  width: min(320px, 36%);
   animation: cardIn .8s var(--ease-out) 1.25s both, bob 6s ease-in-out 3s infinite alternate;
 }
 .float-card__top {
@@ -708,6 +708,20 @@ a { color: var(--blue-ink); text-underline-offset: .2em; }
 .float-card__title--sm { font-size: 1.02rem; }
 .float-card__meta { margin: 0 0 .9rem; font-size: .9rem; color: var(--muted); }
 .float-card--side .float-card__meta { margin-bottom: 0; }
+/* Narrow card: name on top, type and size below, icon beside both. */
+.float-card--side .file {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: .65rem;
+  row-gap: .1rem;
+  align-items: center;
+  margin-top: .85rem;
+  padding: .45rem .8rem .45rem .45rem;
+  font-size: .875rem;
+}
+.float-card--side .file__icon { grid-row: span 2; width: 2rem; height: 2rem; border-radius: 9px; }
+.float-card--side .file__meta { margin-left: 0; padding-left: 0; font-size: .66rem; }
+.float-card--side .file__icon svg { width: .9rem; }
 
 .countdown {
   display: inline-flex;

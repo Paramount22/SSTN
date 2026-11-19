@@ -140,6 +140,13 @@
           <span class="label">{{ $second->date_long }}</span>
           <p class="float-card__title float-card__title--sm">{{ $second->title }}</p>
           <p class="float-card__meta">{{ $second->type_label }}</p>
+          @if ($file = $second->attachments->first())
+            <a class="file file--block" href="{{ $file->url }}" download>
+              <span class="file__icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M10 3v10m0 0-4-4m4 4 4-4M4 16h12"/></svg></span>
+              <span class="file__name">{{ $file->label }}</span>
+              <span class="file__meta">{{ $file->extension }} · {{ $file->size_label }}</span>
+            </a>
+          @endif
         </article>
       @endif
     </div>
