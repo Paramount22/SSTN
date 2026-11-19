@@ -1667,6 +1667,36 @@ a { color: var(--blue-ink); text-underline-offset: .2em; }
   .cc-table td:nth-child(3) { grid-column: 1 / -1; }
 }
 
+/* ---------- Error page (404) ---------- */
+.error-page { display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; }
+.error { flex: 1; display: grid; align-content: center; }
+.error__code {
+  margin: 1.4rem 0 0;
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: clamp(5.5rem, 3rem + 14vw, 11rem);
+  line-height: .95;
+  letter-spacing: -.04em;
+}
+/* the dimension line is sized in em: keep it slim under the large numerals */
+.error__code .hero__accent { padding-bottom: .3em; }
+.error__code .dim { bottom: 0; height: .2em; }
+.error__code .dim__ext { top: -.12em; }
+.error__code .dim__label { font-size: clamp(.62rem, .55rem + .3vw, .8rem); }
+.error__title {
+  margin: 1.4rem 0 0;
+  font-family: var(--font-display);
+  font-stretch: 112%;
+  font-weight: 760;
+  font-size: clamp(1.5rem, 1rem + 2vw, 2.4rem);
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  color: var(--navy);
+  text-wrap: balance;
+}
+.error .hero__lead { max-width: 36rem; margin-inline: auto; }
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
