@@ -8,6 +8,7 @@
         ['route' => 'admin.text-blocks.index', 'match' => 'admin.text-blocks.*', 'icon' => 'document', 'label' => 'Texty stránky'],
         ['route' => 'admin.membership-fees.index', 'match' => 'admin.membership-fees.*', 'icon' => 'users', 'label' => 'Členské príspevky'],
         ['route' => 'admin.links.index', 'match' => 'admin.links.*', 'icon' => 'link', 'label' => 'Odkazy a partneri'],
+        ['route' => 'admin.users.index', 'match' => 'admin.users.*', 'icon' => 'shield', 'label' => 'Administrátori'],
     ];
 @endphp
 <!DOCTYPE html>
@@ -170,7 +171,7 @@
                 <h2 id="confirm-title" class="text-lg font-semibold text-slate-900 dark:text-white" x-text="title"></h2>
                 <p x-show="item" class="mt-3 break-words rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100" x-text="item"></p>
                 <p id="confirm-text" class="mt-3 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                    <span x-text="text"></span> Túto akciu nemožno vrátiť späť.
+                    <span x-text="text"></span><span x-show="! undoable"> Túto akciu nemožno vrátiť späť.</span>
                 </p>
             </div>
         </div>

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\AdminActivity;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Validator;
@@ -50,7 +51,14 @@ class CreateAdmin extends Command
         $user ??= new User(['email' => $email, 'name' => $this->option('name') ?: ucfirst(strstr($email, '@', true))]);
         $user->password = $password;
         // is_admin and email_verified_at are not fillable on purpose; set them explicitly here.
-        $user->forceFill(['is_admin' => true, 'email_verified_at' => $user->email_verified_at ?? now()])->save();
+        // Also the way back in: it reactivates a deactivated account and completes a pending invitation.
+        $user->forceFill([
+            'is_admin' => true,
+            'email_verified_at' => $user->email_verified_at ?? now(),
+            'invitation_sent_at' => null,
+            'deactivated_at' => null,
+        ])->save();
+        AdminActivity::record('granted', $user);
 
         $this->info("Administrátor {$email} je pripravený. Prihlásenie: ".route('login'));
 

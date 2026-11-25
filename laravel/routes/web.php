@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventAttachmentController;
@@ -45,6 +46,17 @@ Route::prefix(config('admin.path'))->group(function () {
             Route::resource('text-blocks', TextBlockController::class)->only(['index', 'edit', 'update'])->parameters(['text-blocks' => 'textBlock']);
             Route::resource('membership-fees', MembershipFeeController::class)->except('show')->parameters(['membership-fees' => 'membershipFee']);
             Route::resource('links', LinkController::class)->except('show');
+
+            // Managing admins asks for the password again (auth.password_timeout).
+            Route::middleware('password.confirm')->controller(AdminUserController::class)->group(function () {
+                Route::get('users', 'index')->name('users.index');
+                Route::get('users/create', 'create')->name('users.create');
+                Route::post('users', 'store')->middleware('throttle:10,1')->name('users.store');
+                Route::post('users/{user}/invitation', 'resendInvitation')->middleware('throttle:6,1')->name('users.invitation.resend');
+                Route::delete('users/{user}/invitation', 'cancelInvitation')->name('users.invitation.cancel');
+                Route::patch('users/{user}/deactivate', 'deactivate')->name('users.deactivate');
+                Route::patch('users/{user}/reactivate', 'reactivate')->name('users.reactivate');
+            });
         });
 
     require __DIR__.'/auth.php';

@@ -46,6 +46,8 @@ class NewPasswordController extends Controller
                 $user->forceFill([
                     'password' => Hash::make($request->password),
                     'remember_token' => Str::random(60),
+                    // An invited admin who resets instead of using the invitation has joined too.
+                    'invitation_sent_at' => null,
                 ])->save();
 
                 event(new PasswordReset($user));

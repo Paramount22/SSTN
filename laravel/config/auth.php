@@ -99,6 +99,15 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+
+        // Invitations for new admins: valid for 7 days, in their own table
+        // (see the 2026_11_25 migration).
+        'invites' => [
+            'provider' => 'users',
+            'table' => 'admin_invitation_tokens',
+            'expire' => 60 * 24 * 7,
+            'throttle' => 60,
+        ],
     ],
 
     /*

@@ -10,6 +10,7 @@ window.Alpine = Alpine;
  * opens the dialog first; the texts come from the form:
  *   data-confirm="Explanation"  data-confirm-title="Zmazať článok?"
  *   data-confirm-item="Item name"  data-confirm-action="Zmazať"
+ *   data-confirm-undoable  (the action can be reversed: no "cannot be undone" note)
  */
 Alpine.data('confirmDialog', () => ({
     form: null,
@@ -17,6 +18,7 @@ Alpine.data('confirmDialog', () => ({
     item: '',
     text: '',
     action: 'Zmazať',
+    undoable: false,
 
     intercept(event) {
         const form = event.target;
@@ -28,6 +30,7 @@ Alpine.data('confirmDialog', () => ({
         this.item = form.dataset.confirmItem || '';
         this.text = form.dataset.confirm || '';
         this.action = form.dataset.confirmAction || 'Zmazať';
+        this.undoable = 'confirmUndoable' in form.dataset;
         this.$refs.dialog.showModal();
         this.$nextTick(() => this.$refs.cancel.focus());
     },
