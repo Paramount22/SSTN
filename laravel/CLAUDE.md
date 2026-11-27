@@ -27,7 +27,7 @@ Všeobecné pravidlá práce sú v globálnom ~/.claude/CLAUDE.md; tu sú len pr
 - HTML z editora ukladať len cez `RichText::sanitize()` (mutator na modeli). `{!! !!}` len pre takto vyčistený obsah alebo pre text, ktorý prešiel cez `e()`.
 - Nahrávanie súborov: prílohy len s príponami z `EventAttachment::ALLOWED_EXTENSIONS`, obrázky podľa `Article::IMAGE_TYPES`; kontrola typu aj prípony (`File::types()->extensions()`).
 - Každá zmena prístupu adminov sa zapisuje cez `AdminActivity::record()`.
-- Žiadne heslá ani admin účty v seederoch, migráciách ani v gite.
+- Žiadne heslá ani admin účty v seederoch, migráciách ani v gite. Jediná výnimka: vývojový admin `admin@sstn.test` v `DatabaseSeeder`, ktorý sa vytvára len v prostredí `local` a `testing` (overuje to test); mimo nich sa admin zakladá cez `php artisan admin:create`.
 - Admin stránky a profil majú zostať `noindex`.
 
 ## Konvencie
